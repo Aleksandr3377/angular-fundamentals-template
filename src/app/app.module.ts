@@ -9,9 +9,10 @@ import { AuthorizedGuard } from '@app/auth/guards/authorized.guard';
 import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CoursesService } from '@app/services/courses.service';
 import { TestComponent } from './test/test.component';
+import {HeaderComponent} from "@shared/components";
 
 @NgModule({
-  declarations: [AppComponent, CourseInfoComponent, TestComponent],
+  declarations: [AppComponent, CourseInfoComponent, TestComponent,HeaderComponent],
   imports: [
     BrowserModule,
     SharedModule,
