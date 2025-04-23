@@ -31,7 +31,7 @@ const components = [
   CustomDatePipe,
   EmailValidatorDirective
 ];
-
+// test commit
 @NgModule({
   declarations: [...components],
   imports: [
