@@ -2,7 +2,7 @@ module.exports = {
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   roots: ['<rootDir>'],
-  moduleFileExtensions: [ 'ts', 'html', 'js', 'json', 'mjs' ],
+  moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/dist/',
@@ -14,5 +14,10 @@ module.exports = {
     '@shared/(.*)$': '<rootDir>/src/app/shared/$1',
     '@features/(.*)$': '<rootDir>/src/app/features/$1',
   },
-  reporters: [ "default", "jest-junit" ]
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.spec.json'
+    }
+  },
+  reporters: ['default', 'jest-junit']
 };
