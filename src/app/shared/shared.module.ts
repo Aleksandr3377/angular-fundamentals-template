@@ -11,8 +11,8 @@ import {
   LoginFormComponent,
   RegistrationFormComponent,
   CourseFormComponent
-} from "./components";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+} from './components';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DurationPipe } from './pipes/duration.pipe';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { EmailValidatorDirective } from '@shared/directives/email.directive';
@@ -31,15 +31,15 @@ const components = [
   CustomDatePipe,
   EmailValidatorDirective
 ];
-
+// test commit
 @NgModule({
-  declarations: [components],
+  declarations: [...components],
   imports: [
     CommonModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  exports: [components]
+  exports: [...components]
 })
-export class SharedModule { }
+export class SharedModule {}
