@@ -1,13 +1,21 @@
 import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-login-form',
-    standalone: true,
-    templateUrl: './login-form.component.html'
+    templateUrl: './login-form.component.html',
+    imports: [
+        ReactiveFormsModule
+    ],
+    standalone: true
 })
 export class LoginFormComponent {
+    form: FormGroup;
 
-    onSubmit() {
-        console.log('Form submitted');
+    constructor(private fb: FormBuilder) {
+        this.form = this.fb.group({
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required]],
+        });
     }
 }

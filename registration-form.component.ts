@@ -3,17 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-registration-form',
-    standalone: true,
-    templateUrl: './registration-form.component.html'
+    templateUrl: './registration-form.component.html',
+    standalone: true
 })
 export class RegistrationFormComponent {
-    registrationForm: FormGroup;
+    form: FormGroup
 
     constructor(private fb: FormBuilder) {
-        this.registrationForm = this.fb.group({
+        this.form = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(6)]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required],
+            password: ['', [Validators.required]],
         });
     }
 }

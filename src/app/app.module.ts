@@ -10,6 +10,7 @@ import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CoursesService } from '@app/services/courses.service';
 import {RouterOutlet} from "@angular/router";
 import { EmailValidatorDirective } from 'rc/app/directives/email-validator.directive';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { EmailValidatorDirective } from 'rc/app/directives/email-validator.direc
     FontAwesomeModule,
     CourseInfoComponent,
     RouterOutlet,
-    EmailValidatorDirective
+    EmailValidatorDirective,
+    ReactiveFormsModule
   ],
   providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
   bootstrap: [AppComponent],

@@ -9,4 +9,5 @@ import { FormGroup } from '@angular/forms';
 export class RegistrationFormComponent {
   registrationForm!: FormGroup;
   // Use the names `name`, `email`, `password` for the form controls.
+    protected readonly FormGroup = FormGroup;
 }

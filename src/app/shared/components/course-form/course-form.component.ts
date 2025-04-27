@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder, FormGroup
-} from '@angular/forms';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-course-form',
   templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss'],
+  imports: [
+    ReactiveFormsModule
+  ],
+  standalone: true
 })
 export class CourseFormComponent {
-  constructor(public fb: FormBuilder, public library: FaIconLibrary) {
-    library.addIconPacks(fas);
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['', [Validators.required, Validators.minLength(2)]],
+      duration: ['', [Validators.required, Validators.min(0)]],
+      authors: [[]],
+    });
   }
-  courseForm!: FormGroup;
-  // Use the names `title`, `description`, `author`, 'authors' (for authors list), `duration` for the form controls.
 }
