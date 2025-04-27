@@ -18,7 +18,6 @@ describe('HeaderComponent', () => {
                 imports: [HeaderComponent],
             }
         );
-
         expect(view.getByText('Right Side Content')).toBeTruthy();
     });
 
@@ -34,7 +33,6 @@ describe('HeaderComponent', () => {
                 imports: [HeaderComponent],
             }
         );
-
         expect(view.getByText('Button 1')).toBeTruthy();
         expect(view.getByText('Button 2')).toBeTruthy();
     });
