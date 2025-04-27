@@ -9,6 +9,7 @@ import { AuthorizedGuard } from '@app/auth/guards/authorized.guard';
 import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CoursesService } from '@app/services/courses.service';
 import {RouterOutlet} from "@angular/router";
+import { EmailValidatorDirective } from 'rc/app/directives/email-validator.directive';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import {RouterOutlet} from "@angular/router";
     FontAwesomeModule,
     CourseInfoComponent,
     RouterOutlet,
+    EmailValidatorDirective
   ],
   providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
   bootstrap: [AppComponent],
