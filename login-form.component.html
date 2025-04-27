@@ -1,0 +1,33 @@
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+<div>
+    <input
+        type="text"
+name="email"
+ngModel
+required
+appEmailValidator
+#email="ngModel"
+placeholder="Email"
+/>
+<div *ngIf="email.invalid && (email.touched || loginForm.submitted)">
+<small *ngIf="email.errors?.required">Email is required.</small>
+<small *ngIf="email.errors?.invalidEmail">Invalid email format.</small>
+</div>
+</div>
+
+<div>
+<input
+    type="password"
+name="password"
+ngModel
+required
+#password="ngModel"
+placeholder="Password"
+/>
+<div *ngIf="password.invalid && (password.touched || loginForm.submitted)">
+    <small>Password is required.</small>
+</div>
+</div>
+
+<button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
