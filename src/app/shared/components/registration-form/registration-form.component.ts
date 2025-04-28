@@ -1,13 +1,29 @@
-import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { TestBed, ComponentFixture } from "@angular/core/testing";
+import { RegistrationFormComponent } from "../../../../../registration-form.component";
 
-@Component({
-  selector: 'app-registration-form',
-  templateUrl: './registration-form.component.html',
-  styleUrls: ['./registration-form.component.scss'],
-})
-export class RegistrationFormComponent {
-  registrationForm!: FormGroup;
-  // Use the names `name`, `email`, `password` for the form controls.
-    protected readonly FormGroup = FormGroup;
-}
+let fixture: ComponentFixture<RegistrationFormComponent>;
+let component: RegistrationFormComponent;
+let fb: FormBuilder;
+
+beforeEach(async () => {
+  await TestBed.configureTestingModule({
+    imports: [ReactiveFormsModule],
+    declarations: [RegistrationFormComponent],
+    providers: [FormBuilder]
+  }).compileComponents();
+});
+
+beforeEach(() => {
+  fixture = TestBed.createComponent(RegistrationFormComponent);
+  component = fixture.componentInstance;
+  fb = TestBed.inject(FormBuilder);
+
+  component.form = fb.group({
+    name: [''],
+    email: [''],
+    password: ['']
+  });
+
+  fixture.detectChanges();
+});
