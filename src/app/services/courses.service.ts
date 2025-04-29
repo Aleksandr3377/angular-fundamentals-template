@@ -1,42 +1,19 @@
-import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Injectable} from "@angular/core";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CoursesService {
-    getAll() {
-        // Add your code here
-    }
+    private baseUrl = 'http://localhost:4000/api';
 
-    createCourse(course: any) { // replace 'any' with the required interface
-        // Add your code here
-    }
+    constructor(private http: HttpClient) {}
 
-    editCourse(id: string, course: any) { // replace 'any' with the required interface
-        // Add your code here
-    }
-
-    getCourse(id: string) {
-        // Add your code here
-    }
-
-    deleteCourse(id: string) {
-        // Add your code here
-    }
-
-    filterCourses(value: string) {
-        // Add your code here
-    }
-
-    getAllAuthors() {
-        // Add your code here
-    }
-
-    createAuthor(name: string) {
-        // Add your code here
-    }
-
-    getAuthorById(id: string) {
-        // Add your code here
-    }
+    getAll() { return this.http.get(`${this.baseUrl}/courses`); }
+    createCourse(course: any) { return this.http.post(`${this.baseUrl}/courses`, course); }
+    editCourse(id: string, course: any) { return this.http.put(`${this.baseUrl}/courses/${id}`, course); }
+    getCourse(id: string) { return this.http.get(`${this.baseUrl}/courses/${id}`); }
+    deleteCourse(id: string) { return this.http.delete(`${this.baseUrl}/courses/${id}`); }
+    filterCourses(query: string) { return this.http.get(`${this.baseUrl}/courses?filter=${query}`); }
+    getAllAuthors() { return this.http.get(`${this.baseUrl}/authors`); }
+    createAuthor(author: any) { return this.http.post(`${this.baseUrl}/authors`, author); }
+    getAuthorById(id: string) { return this.http.get(`${this.baseUrl}/authors/${id}`); }
 }
