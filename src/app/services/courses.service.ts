@@ -1,6 +1,6 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Course} from "@app/store/courses/courses.state";
+import { Course } from 'src/app/courses/models/course.model';
 import {Observable} from "rxjs";
 
 @Injectable({ providedIn: 'root' })

@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '@app/store';
 import * as CoursesSelectors from './courses.selectors';
 import * as CoursesActions from './courses.actions';
-import { Course } from '@app/models/course.model';
+import { Course } from 'src/app/courses/models/course.model';
 
 @Injectable({
     providedIn: 'root'

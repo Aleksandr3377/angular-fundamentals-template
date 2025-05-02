@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { CoursesService } from 'src/app/courses/services/courses.service';
 import { Router } from '@angular/router';
-import { catchError, map, mergeMap, of, withLatestFrom, tap } from 'rxjs';
-import { Store, select } from '@ngrx/store';
+import { Store, select, Action } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap, of, withLatestFrom, tap, Observable } from 'rxjs';
 
 import {
     requestAllCourses,
@@ -24,11 +23,11 @@ import {
     requestCreateCourseFail,
 } from './courses.actions';
 
-import { CoursesState } from './courses.state'; // імпортуй з .state, а не reducer!
+import { CoursesService } from '@app/services/courses.service';
+import { CoursesState } from './courses.state';
 import { coursesFeatureKey } from './courses.reducer';
 import * as CoursesSelectors from './courses.selectors';
-
-import { Course } from 'src/app/courses/models/course.model'; // створити або змінити шлях, якщо інший
+import { Course } from 'src/app/courses/models/course.model';
 
 @Injectable()
 export class CoursesEffects {
@@ -39,7 +38,7 @@ export class CoursesEffects {
         private store$: Store<{ [coursesFeatureKey]: CoursesState }>
     ) {}
 
-    getAll$ = createEffect(() =>
+    getAll$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestAllCourses),
             mergeMap(() =>
@@ -51,19 +50,19 @@ export class CoursesEffects {
         )
     );
 
-    getSpecificCourse$ = createEffect(() =>
+    getSpecificCourse$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestSingleCourse),
             mergeMap(({ id }) =>
                 this.coursesService.getCourse(id).pipe(
-                    map((course: Course) => requestSingleCourseSuccess({ course })),
+                    map((res: any) => requestSingleCourseSuccess({ course: res as Course })),
                     catchError(error => of(requestSingleCourseFail({ error })))
                 )
             )
         )
     );
 
-    filteredCourses$ = createEffect(() =>
+    filteredCourses$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestFilteredCourses),
             withLatestFrom(this.store$.pipe(select(CoursesSelectors.getAllCourses))),
@@ -76,7 +75,7 @@ export class CoursesEffects {
         )
     );
 
-    deleteCourse$ = createEffect(() =>
+    deleteCourse$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestDeleteCourse),
             mergeMap(({ id }) =>
@@ -88,24 +87,24 @@ export class CoursesEffects {
         )
     );
 
-    editCourse$ = createEffect(() =>
+    editCourse$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestEditCourse),
             mergeMap(({ id, course }) =>
                 this.coursesService.editCourse(id, course).pipe(
-                    map((updated: Course) => requestEditCourseSuccess({ course: updated })),
+                    map((res: any) => requestEditCourseSuccess({ course: res as Course })),
                     catchError(error => of(requestEditCourseFail({ error })))
                 )
             )
         )
     );
 
-    createCourse$ = createEffect(() =>
+    createCourse$ = createEffect((): Observable<Action> =>
         this.actions$.pipe(
             ofType(requestCreateCourse),
             mergeMap(({ course }) =>
                 this.coursesService.createCourse(course).pipe(
-                    map((created: Course) => requestCreateCourseSuccess({ course: created })),
+                    map((res: any) => requestCreateCourseSuccess({ course: res as Course })),
                     catchError(error => of(requestCreateCourseFail({ error })))
                 )
             )
