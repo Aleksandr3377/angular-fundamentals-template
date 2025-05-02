@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\shared",
+    "\\src\\app\\shared\\tokens"
+  ],
+  "SelectedNode": "\\src\\app\\shared\\tokens\\window.token.ts",
+  "PreviewInSolutionExplorer": false
+}
