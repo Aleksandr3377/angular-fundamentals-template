@@ -11,6 +11,9 @@ import { CoursesService } from '@app/services/courses.service';
 import {RouterOutlet} from "@angular/router";
 import { EmailValidatorDirective } from 'rc/app/directives/email-validator.directive';
 import { ReactiveFormsModule } from '@angular/forms';
+import {StoreModule} from "@ngrx/store";
+import {EffectsModule} from "@ngrx/effects";
+import { reducers, effects } from './store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +24,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     CourseInfoComponent,
     RouterOutlet,
     EmailValidatorDirective,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
   ],
   providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
   bootstrap: [AppComponent],
