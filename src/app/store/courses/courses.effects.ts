@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { CoursesService } from '@app/courses/services/courses.service';
+import { CoursesService } from 'src/app/courses/services/courses.service';
 import { Router } from '@angular/router';
+import { catchError, map, mergeMap, of, withLatestFrom, tap } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+
 import {
     requestAllCourses,
     requestAllCoursesSuccess,
@@ -20,11 +23,12 @@ import {
     requestCreateCourseSuccess,
     requestCreateCourseFail,
 } from './courses.actions';
-import { catchError, map, mergeMap, of, withLatestFrom, tap } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import { CoursesState } from './courses.reducer';
+
+import { CoursesState } from './courses.state'; // імпортуй з .state, а не reducer!
 import { coursesFeatureKey } from './courses.reducer';
 import * as CoursesSelectors from './courses.selectors';
+
+import { Course } from 'src/app/courses/models/course.model'; // створити або змінити шлях, якщо інший
 
 @Injectable()
 export class CoursesEffects {
@@ -40,7 +44,7 @@ export class CoursesEffects {
             ofType(requestAllCourses),
             mergeMap(() =>
                 this.coursesService.getAll().pipe(
-                    map(courses => requestAllCoursesSuccess({ courses })),
+                    map((courses: Course[]) => requestAllCoursesSuccess({ courses })),
                     catchError(error => of(requestAllCoursesFail({ error })))
                 )
             )
@@ -52,7 +56,7 @@ export class CoursesEffects {
             ofType(requestSingleCourse),
             mergeMap(({ id }) =>
                 this.coursesService.getCourse(id).pipe(
-                    map(course => requestSingleCourseSuccess({ course })),
+                    map((course: Course) => requestSingleCourseSuccess({ course })),
                     catchError(error => of(requestSingleCourseFail({ error })))
                 )
             )
@@ -64,7 +68,7 @@ export class CoursesEffects {
             ofType(requestFilteredCourses),
             withLatestFrom(this.store$.pipe(select(CoursesSelectors.getAllCourses))),
             map(([{ title }, courses]) => {
-                const filtered = courses.filter(course =>
+                const filtered = courses.filter((course: Course) =>
                     course.title.toLowerCase().includes(title.toLowerCase())
                 );
                 return requestFilteredCoursesSuccess({ courses: filtered });
@@ -89,7 +93,7 @@ export class CoursesEffects {
             ofType(requestEditCourse),
             mergeMap(({ id, course }) =>
                 this.coursesService.editCourse(id, course).pipe(
-                    map(updated => requestEditCourseSuccess({ course: updated })),
+                    map((updated: Course) => requestEditCourseSuccess({ course: updated })),
                     catchError(error => of(requestEditCourseFail({ error })))
                 )
             )
@@ -101,7 +105,7 @@ export class CoursesEffects {
             ofType(requestCreateCourse),
             mergeMap(({ course }) =>
                 this.coursesService.createCourse(course).pipe(
-                    map(created => requestCreateCourseSuccess({ course: created })),
+                    map((created: Course) => requestCreateCourseSuccess({ course: created })),
                     catchError(error => of(requestCreateCourseFail({ error })))
                 )
             )

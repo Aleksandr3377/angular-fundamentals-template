@@ -1,9 +1,4 @@
-
-
-export interface Course {
-    id: number | string;
-    title: string;
-}
+import { Course } from 'src/app/courses/models/course.model';
 
 export interface CoursesState {
     allCourses: Course[];

@@ -1,5 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import {Course} from "@app/store/courses/courses.state";
+import {Observable} from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
@@ -7,7 +9,9 @@ export class CoursesService {
 
     constructor(private http: HttpClient) {}
 
-    getAll() { return this.http.get(`${this.baseUrl}/courses`); }
+    getAll(): Observable<Course[]> {
+        return this.http.get<Course[]>('http://localhost:4000/api/courses');
+    }
     createCourse(course: any) { return this.http.post(`${this.baseUrl}/courses`, course); }
     editCourse(id: string, course: any) { return this.http.put(`${this.baseUrl}/courses/${id}`, course); }
     getCourse(id: string) { return this.http.get(`${this.baseUrl}/courses/${id}`); }

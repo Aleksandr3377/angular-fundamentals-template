@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { CoursesState } from './courses.state';
 import * as CoursesActions from './courses.actions';
-
+export type { CoursesState };
 export const coursesFeatureKey = 'courses';
 
 export const initialState: CoursesState = {

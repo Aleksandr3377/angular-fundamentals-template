@@ -3,10 +3,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CoursesState } from './courses.reducer';
 import { coursesFeatureKey } from './courses.reducer';
 
-// Feature Selector
 export const selectCoursesState = createFeatureSelector<CoursesState>(coursesFeatureKey);
 
-// Individual Selectors
 export const isAllCoursesLoadingSelector = createSelector(
     selectCoursesState,
     (state: CoursesState) => state.isAllCoursesLoading
