@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { CoursesState } from './courses.state';
+export { CoursesState } from './courses.state';
 import * as CoursesActions from './courses.actions';
 
 export const coursesFeatureKey = 'courses';
