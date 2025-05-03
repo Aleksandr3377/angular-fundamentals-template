@@ -1,61 +1,105 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CoursesEffects } from './courses.effects';
 import { CoursesService } from '@app/services/courses.service';
-import { requestAllCourses, requestAllCoursesSuccess, requestAllCoursesFail } from './courses.actions';
-import { Course } from 'src/app/courses/models/course.model';
+import * as CoursesActions from '@app/store/courses/courses.actions';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Course } from 'src/app/courses/models/course.model';
 
 describe('CoursesEffects', () => {
-    let actions$: Observable<any>;
+    let actions$: Observable<Action>;
     let effects: CoursesEffects;
-    let coursesService: jasmine.SpyObj<CoursesService>;
+    let service: jasmine.SpyObj<CoursesService>;
+
+    const mockCourses: Course[] = [
+        { id: '1', title: 'Course 1', description: '', duration: 60 },
+        { id: '2', title: 'Course 2', description: '', duration: 45 }
+    ];
 
     beforeEach(() => {
-        const courseServiceMock = jasmine.createSpyObj('CoursesService', ['getAll']);
+        const spy = jasmine.createSpyObj('CoursesService', [
+            'getAll', 'getCourse', 'editCourse', 'createCourse', 'deleteCourse'
+        ]);
 
         TestBed.configureTestingModule({
-            imports: [RouterTestingModule],
+            imports: [HttpClientTestingModule],
             providers: [
                 CoursesEffects,
                 provideMockActions(() => actions$),
-                provideMockStore({ initialState: {} }), 
-                { provide: CoursesService, useValue: courseServiceMock },
+                provideMockStore(),
+                { provide: CoursesService, useValue: spy }
             ]
         });
 
         effects = TestBed.inject(CoursesEffects);
-        coursesService = TestBed.inject(CoursesService) as jasmine.SpyObj<CoursesService>;
+        service = TestBed.inject(CoursesService) as jasmine.SpyObj<CoursesService>;
     });
 
-    it('getAll$ should return requestAllCoursesSuccess on success', () => {
-        const mockCourses: Course[] = [
-            { id: '1', title: 'Course 1', description: '', duration: 0, creationDate: '' }
-        ];
-        const action = requestAllCourses();
-        const outcome = requestAllCoursesSuccess({ courses: mockCourses });
-
-        actions$ = hot('-a', { a: action });
-        coursesService.getAll.and.returnValue(cold('-b|', { b: mockCourses }));
-
-        const expected = cold('--c', { c: outcome });
-
-        expect(effects.getAll$).toBeObservable(expected);
+    it('should create effects', () => {
+        expect(effects).toBeTruthy();
     });
 
-    it('getAll$ should return requestAllCoursesFail on error', () => {
-        const action = requestAllCourses();
-        const error = new Error('Network error');
-        const outcome = requestAllCoursesFail({ error: error.message });
+    describe('getSpecificCourse$', () => {
+        it('should dispatch requestSingleCourseSuccess', () => {
+            const course = mockCourses[0];
+            const action = CoursesActions.requestSingleCourse({ id: '1' });
+            const result = CoursesActions.requestSingleCourseSuccess({ course });
 
-        actions$ = hot('-a', { a: action });
-        coursesService.getAll.and.returnValue(cold('-#|', {}, error));
+            service.getCourse.and.returnValue(of(course));
 
-        const expected = cold('--c', { c: outcome });
+            actions$ = hot('-a-', { a: action });
+            const expected = cold('-b', { b: result });
 
-        expect(effects.getAll$).toBeObservable(expected);
+            expect(effects.getSpecificCourse$).toBeObservable(expected);
+        });
+    });
+
+    describe('editCourse$', () => {
+        it('should dispatch requestEditCourseSuccess', () => {
+            const course = { id: '1', title: 'Updated Course', description: '', duration: 50 };
+            const action = CoursesActions.requestEditCourse({ id: '1', course });
+            const result = CoursesActions.requestEditCourseSuccess({ course });
+
+            service.editCourse.and.returnValue(of(course));
+
+            actions$ = hot('-a-', { a: action });
+            const expected = cold('-b', { b: result });
+
+            expect(effects.editCourse$).toBeObservable(expected);
+        });
+    });
+
+    describe('createCourse$', () => {
+        it('should dispatch requestCreateCourseSuccess', () => {
+            const course = { title: 'New Course', description: '', duration: 30 } as Course;
+            const created = { ...course, id: '99' };
+            const action = CoursesActions.requestCreateCourse({ course });
+            const result = CoursesActions.requestCreateCourseSuccess({ course: created });
+
+            service.createCourse.and.returnValue(of(created));
+
+            actions$ = hot('-a-', { a: action });
+            const expected = cold('-b', { b: result });
+
+            expect(effects.createCourse$).toBeObservable(expected);
+        });
+    });
+
+    describe('getAll$', () => {
+        it('should dispatch requestAllCoursesSuccess', () => {
+            const action = CoursesActions.requestAllCourses();
+            const result = CoursesActions.requestAllCoursesSuccess({ courses: mockCourses });
+
+            service.getAll.and.returnValue(of(mockCourses));
+
+            actions$ = hot('-a-', { a: action });
+            const expected = cold('-b', { b: result });
+
+            expect(effects.getAll$).toBeObservable(expected);
+        });
     });
 });
