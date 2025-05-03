@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CoursesEffects } from './courses.effects';
 import { CoursesService } from '@app/services/courses.service';
 import { requestAllCourses, requestAllCoursesSuccess, requestAllCoursesFail } from './courses.actions';
@@ -22,7 +22,7 @@ describe('CoursesEffects', () => {
             providers: [
                 CoursesEffects,
                 provideMockActions(() => actions$),
-                provideMockStore({}),
+                provideMockStore({ initialState: {} }), 
                 { provide: CoursesService, useValue: courseServiceMock },
             ]
         });
@@ -32,7 +32,9 @@ describe('CoursesEffects', () => {
     });
 
     it('getAll$ should return requestAllCoursesSuccess on success', () => {
-        const mockCourses: Course[] = [{ id: '1', title: 'Course 1', description: '', duration: 0, creationDate: '' }];
+        const mockCourses: Course[] = [
+            { id: '1', title: 'Course 1', description: '', duration: 0, creationDate: '' }
+        ];
         const action = requestAllCourses();
         const outcome = requestAllCoursesSuccess({ courses: mockCourses });
 
