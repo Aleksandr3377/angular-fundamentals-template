@@ -22,7 +22,11 @@ describe('CoursesEffects', () => {
 
     beforeEach(() => {
         const spy = jasmine.createSpyObj('CoursesService', [
-            'getAll', 'getCourse', 'editCourse', 'createCourse', 'deleteCourse'
+            'getAll',
+            'getCourse',
+            'editCourse',
+            'createCourse',
+            'deleteCourse'
         ]);
 
         TestBed.configureTestingModule({
@@ -30,7 +34,7 @@ describe('CoursesEffects', () => {
             providers: [
                 CoursesEffects,
                 provideMockActions(() => actions$),
-                provideMockStore(),
+                provideMockStore({ initialState: {} }),
                 { provide: CoursesService, useValue: spy }
             ]
         });
@@ -50,7 +54,6 @@ describe('CoursesEffects', () => {
             const result = CoursesActions.requestSingleCourseSuccess({ course });
 
             service.getCourse.and.returnValue(of(course));
-
             actions$ = hot('-a-', { a: action });
             const expected = cold('-b', { b: result });
 
@@ -60,12 +63,16 @@ describe('CoursesEffects', () => {
 
     describe('editCourse$', () => {
         it('should dispatch requestEditCourseSuccess', () => {
-            const course = { id: '1', title: 'Updated Course', description: '', duration: 50 };
+            const course = {
+                id: '1',
+                title: 'Updated Course',
+                description: '',
+                duration: 50
+            };
             const action = CoursesActions.requestEditCourse({ id: '1', course });
             const result = CoursesActions.requestEditCourseSuccess({ course });
 
             service.editCourse.and.returnValue(of(course));
-
             actions$ = hot('-a-', { a: action });
             const expected = cold('-b', { b: result });
 
@@ -75,13 +82,16 @@ describe('CoursesEffects', () => {
 
     describe('createCourse$', () => {
         it('should dispatch requestCreateCourseSuccess', () => {
-            const course = { title: 'New Course', description: '', duration: 30 } as Course;
+            const course = {
+                title: 'New Course',
+                description: '',
+                duration: 30
+            } as Course;
             const created = { ...course, id: '99' };
             const action = CoursesActions.requestCreateCourse({ course });
             const result = CoursesActions.requestCreateCourseSuccess({ course: created });
 
             service.createCourse.and.returnValue(of(created));
-
             actions$ = hot('-a-', { a: action });
             const expected = cold('-b', { b: result });
 
@@ -95,7 +105,6 @@ describe('CoursesEffects', () => {
             const result = CoursesActions.requestAllCoursesSuccess({ courses: mockCourses });
 
             service.getAll.and.returnValue(of(mockCourses));
-
             actions$ = hot('-a-', { a: action });
             const expected = cold('-b', { b: result });
 
